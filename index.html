@@ -3,178 +3,191 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Raízes do Nordeste - Pedidos</title>
+  <title>Raízes do Nordeste | Pedidos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Aviso LGPD no topo -->
+  <canvas id="smoke-canvas"></canvas>
+
   <div id="lgpd-banner" class="lgpd-banner">
-    <p>Usamos cookies e dados para melhorar sua experiência e o programa de fidelidade. 
-    <a href="#" onclick="mostrarPolitica()">Saiba mais</a>. 
-    <button onclick="aceitarLGPD()">Aceitar</button>
-    <button onclick="recusarLGPD()">Recusar</button>
-    </p>
+    <div class="lgpd-inner">
+      <p>Usamos cookies e dados para melhorar sua experiência e o programa de fidelidade.
+        <a href="#" id="link-politica-banner">Saiba mais</a>
+      </p>
+      <div class="lgpd-btns">
+        <button type="button" id="btn-aceitar-lgpd" class="btn-lgpd aceitar">Aceitar</button>
+        <button type="button" id="btn-recusar-lgpd" class="btn-lgpd recusar">Recusar</button>
+      </div>
+    </div>
   </div>
 
-  <header>
-    <div class="logo">
-      <h1>Raízes do Nordeste</h1>
-      <p>Sabor de casa em cada unidade</p>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">RN</div>
+        <div>
+          <h1>Raízes do Nordeste</h1>
+          <span class="tagline">Sabor de casa em cada unidade</span>
+        </div>
+      </div>
+      <nav class="nav" id="main-nav">
+        <button type="button" data-tela="inicio" class="nav-btn ativo">Início</button>
+        <button type="button" data-tela="cardapio" class="nav-btn">Cardápio</button>
+        <button type="button" data-tela="carrinho" class="nav-btn">
+          Carrinho <span class="badge" id="qtd-carrinho">0</span>
+        </button>
+        <button type="button" data-tela="fidelidade" class="nav-btn">Fidelidade</button>
+        <button type="button" data-tela="pedido" class="nav-btn">Meu Pedido</button>
+        <button type="button" data-tela="login" class="nav-btn" id="btn-login">Entrar</button>
+      </nav>
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
     </div>
-    <nav>
-      <button onclick="mostrarTela('inicio')">Início</button>
-      <button onclick="mostrarTela('cardapio')">Cardápio</button>
-      <button onclick="mostrarTela('carrinho')">Carrinho (<span id="qtd-carrinho">0</span>)</button>
-      <button onclick="mostrarTela('fidelidade')">Fidelidade</button>
-      <button onclick="mostrarTela('pedido')">Meu Pedido</button>
-      <button onclick="mostrarTela('login')" id="btn-login">Entrar</button>
-    </nav>
   </header>
 
-  <main>
-    <!-- Tela Início -->
+  <main class="main">
     <section id="tela-inicio" class="tela ativa">
-      <h2>Bem-vindo!</h2>
-      <p>Escolha a unidade mais próxima ou faça seu pedido online.</p>
-      
-      <div class="unidades">
-        <h3>Nossas unidades</h3>
-        <select id="select-unidade" onchange="trocarUnidade()">
+      <div class="hero">
+        <div class="hero-text">
+          <h2>Bem-vindo à Rede Raízes do Nordeste</h2>
+          <p>Peça pelo App, Totem ou Web. Cardápio fresco, com o melhor da culinária nordestina.</p>
+          <button type="button" class="btn-principal" data-tela="cardapio">Ver cardápio</button>
+        </div>
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="Prato nordestino" loading="lazy">
+        </div>
+      </div>
+      <div class="unidades-box">
+        <h3>Escolha a unidade</h3>
+        <select id="select-unidade">
           <option value="recife">Recife - Centro</option>
           <option value="olinda">Olinda - Bairro Novo</option>
           <option value="jaboatao">Jaboatão - Prazeres</option>
         </select>
       </div>
-
-      <div class="destaques">
-        <h3>Promoções do dia</h3>
+      <div class="promo-section">
+        <h3>Promoção do dia</h3>
         <div class="promo-card">
-          <p><strong>Combo Nordestino</strong> - R$ 24,90</p>
-          <p>Baião + suco + sobremesa</p>
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" alt="Combo" loading="lazy">
+          <div>
+            <strong>Combo Nordestino</strong>
+            <p>Baião + suco + sobremesa</p>
+            <span class="preco-promo">R$ 24,90</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Tela Cardápio -->
     <section id="tela-cardapio" class="tela">
-      <h2>Cardápio - <span id="nome-unidade">Recife - Centro</span></h2>
-      <div id="lista-cardapio" class="lista-produtos">
-        <!-- preenchido pelo JS -->
+      <h2>Cardápio — <span id="nome-unidade">Recife - Centro</span></h2>
+      <div id="lista-cardapio" class="grid-produtos"></div>
+    </section>
+
+    <section id="tela-carrinho" class="tela">
+      <h2>Seu carrinho</h2>
+      <div id="itens-carrinho" class="lista-carrinho"></div>
+      <div class="carrinho-resumo">
+        <p class="total">Total: R$ <span id="total-carrinho">0,00</span></p>
+        <button type="button" id="btn-finalizar" class="btn-principal">Finalizar pedido</button>
       </div>
     </section>
 
-    <!-- Tela Carrinho -->
-    <section id="tela-carrinho" class="tela">
-      <h2>Seu Carrinho</h2>
-      <div id="itens-carrinho"></div>
-      <p class="total">Total: R$ <span id="total-carrinho">0,00</span></p>
-      <button onclick="irParaPagamento()" class="btn-principal">Finalizar Pedido</button>
-    </section>
-
-    <!-- Tela Login / Cadastro -->
     <section id="tela-login" class="tela">
-      <h2>Entrar ou Cadastrar</h2>
-      <form id="form-login" onsubmit="fazerLogin(event)">
-        <label>E-mail</label>
-        <input type="email" id="email" required placeholder="seu@email.com">
-        
-        <label>Senha</label>
-        <input type="password" id="senha" required>
-        
-        <div class="lgpd-check">
-          <input type="checkbox" id="aceite-lgpd" required>
-          <label for="aceite-lgpd">Li e aceito a Política de Privacidade (LGPD)</label>
-        </div>
-        
-        <button type="submit" class="btn-principal">Entrar</button>
-      </form>
-      <p><a href="#" onclick="mostrarCadastro()">Ainda não tem conta? Cadastre-se</a></p>
+      <div class="form-card">
+        <h2>Entrar</h2>
+        <form id="form-login">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" required placeholder="seu@email.com">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" required>
+          <div class="check-lgpd">
+            <input type="checkbox" id="aceite-lgpd" required>
+            <label for="aceite-lgpd">Li e aceito a Política de Privacidade (LGPD)</label>
+          </div>
+          <button type="submit" class="btn-principal">Entrar</button>
+        </form>
+        <p class="link-alt"><a href="#" id="link-cadastro">Ainda não tem conta? Cadastre-se</a></p>
+      </div>
     </section>
 
-    <!-- Tela Cadastro -->
     <section id="tela-cadastro" class="tela">
-      <h2>Criar Conta</h2>
-      <form id="form-cadastro" onsubmit="fazerCadastro(event)">
-        <label>Nome completo</label>
-        <input type="text" id="nome" required>
-        
-        <label>E-mail</label>
-        <input type="email" id="email-cad" required>
-        
-        <label>Telefone</label>
-        <input type="tel" id="telefone" required placeholder="(81) 99999-9999">
-        
-        <label>Senha</label>
-        <input type="password" id="senha-cad" required>
-        
-        <div class="lgpd-check">
-          <input type="checkbox" id="aceite-lgpd-cad" required>
-          <label for="aceite-lgpd-cad">Autorizo o uso dos meus dados para o programa de fidelidade e comunicações (LGPD)</label>
-        </div>
-        
-        <button type="submit" class="btn-principal">Cadastrar</button>
-      </form>
+      <div class="form-card">
+        <h2>Criar conta</h2>
+        <form id="form-cadastro">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" required>
+          <label for="email-cad">E-mail</label>
+          <input type="email" id="email-cad" required>
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" required placeholder="(81) 99999-9999">
+          <label for="senha-cad">Senha</label>
+          <input type="password" id="senha-cad" required>
+          <div class="check-lgpd">
+            <input type="checkbox" id="aceite-lgpd-cad" required>
+            <label for="aceite-lgpd-cad">Autorizo o uso dos meus dados para o programa de fidelidade e comunicações (LGPD)</label>
+          </div>
+          <button type="submit" class="btn-principal">Cadastrar</button>
+        </form>
+        <p class="link-alt"><a href="#" id="link-voltar-login">Já tenho conta</a></p>
+      </div>
     </section>
 
-    <!-- Tela Fidelidade -->
     <section id="tela-fidelidade" class="tela">
       <h2>Programa de Fidelidade</h2>
-      <div class="pontos-box">
-        <p>Seus pontos: <strong id="pontos-usuario">0</strong></p>
-        <p>A cada R$ 10 em pedidos você ganha 1 ponto.</p>
-        <p>10 pontos = R$ 5 de desconto</p>
+      <div class="pontos-card">
+        <p class="pontos-num" id="pontos-usuario">0</p>
+        <p>pontos</p>
+        <p class="pontos-info">A cada R$ 10 em pedidos você ganha 1 ponto.<br>10 pontos = R$ 5 de desconto</p>
       </div>
-      <h3>Como funciona</h3>
-      <ul>
+      <ul class="lista-regras">
         <li>Faça pedidos pelo App, Totem ou site</li>
-        <li>Acumule pontos automaticamente</li>
+        <li>Acumule pontos automaticamente após o pagamento</li>
         <li>Troque por descontos nas próximas compras</li>
       </ul>
     </section>
 
-    <!-- Tela Acompanhamento de Pedido -->
     <section id="tela-pedido" class="tela">
-      <h2>Acompanhar Pedido</h2>
-      <div id="status-pedido">
-        <p>Nenhum pedido em andamento.</p>
+      <h2>Acompanhar pedido</h2>
+      <div id="status-pedido" class="status-area">
+        <p class="vazio">Nenhum pedido em andamento.</p>
       </div>
     </section>
 
-    <!-- Tela Pagamento (simulado) -->
     <section id="tela-pagamento" class="tela">
-      <h2>Pagamento</h2>
-      <p>Total a pagar: R$ <span id="total-pagamento">0,00</span></p>
-      
-      <div class="opcoes-pagamento">
-        <label><input type="radio" name="pagamento" value="pix" checked> PIX</label>
-        <label><input type="radio" name="pagamento" value="cartao"> Cartão de Crédito</label>
-        <label><input type="radio" name="pagamento" value="dinheiro"> Dinheiro (no local)</label>
+      <div class="form-card">
+        <h2>Pagamento</h2>
+        <p class="total-pag">Total a pagar: <strong>R$ <span id="total-pagamento">0,00</span></strong></p>
+        <div class="opcoes-pag">
+          <label><input type="radio" name="pagamento" value="pix" checked> PIX</label>
+          <label><input type="radio" name="pagamento" value="cartao"> Cartão de Crédito</label>
+          <label><input type="radio" name="pagamento" value="dinheiro"> Dinheiro (no local)</label>
+        </div>
+        <p class="aviso-pag">Você será redirecionado para o serviço de pagamento externo.</p>
+        <button type="button" id="btn-pagar" class="btn-principal">Pagar agora</button>
+        <button type="button" class="btn-secundario" data-tela="carrinho">Voltar</button>
       </div>
-      
-      <p class="aviso">Você será redirecionado para o serviço de pagamento externo.</p>
-      <button onclick="simularPagamento()" class="btn-principal">Pagar agora</button>
-      <button onclick="mostrarTela('carrinho')" class="btn-secundario">Voltar</button>
     </section>
-
-    <!-- Modal Política de Privacidade -->
-    <div id="modal-politica" class="modal">
-      <div class="modal-conteudo">
-        <h3>Política de Privacidade - LGPD</h3>
-        <p>Coletamos apenas os dados necessários para:</p>
-        <ul>
-          <li>Processar seus pedidos</li>
-          <li>Gerenciar o programa de fidelidade</li>
-          <li>Enviar promoções (somente se você autorizar)</li>
-        </ul>
-        <p>Seus dados não são vendidos. Você pode solicitar exclusão a qualquer momento.</p>
-        <button onclick="fecharPolitica()">Fechar</button>
-      </div>
-    </div>
   </main>
 
-  <footer>
-    <p>Raízes do Nordeste © 2026 - Todos os direitos reservados</p>
-    <p><a href="#" onclick="mostrarPolitica()">Política de Privacidade</a></p>
+  <div id="modal-politica" class="modal" hidden>
+    <div class="modal-box">
+      <h3>Política de Privacidade — LGPD</h3>
+      <p>Coletamos apenas os dados necessários para:</p>
+      <ul>
+        <li>Processar seus pedidos</li>
+        <li>Gerenciar o programa de fidelidade</li>
+        <li>Enviar promoções (somente se você autorizar)</li>
+      </ul>
+      <p>Seus dados não são vendidos. Você pode solicitar exclusão a qualquer momento.</p>
+      <button type="button" id="btn-fechar-modal" class="btn-principal">Fechar</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Raízes do Nordeste © 2026</p>
+    <p><a href="#" id="link-politica-footer">Política de Privacidade</a></p>
   </footer>
 
   <script src="script.js"></script>
