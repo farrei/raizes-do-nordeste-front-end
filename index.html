@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raízes do Nordeste - Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Aviso LGPD no topo -->
+  <div id="lgpd-banner" class="lgpd-banner">
+    <p>Usamos cookies e dados para melhorar sua experiência e o programa de fidelidade. 
+    <a href="#" onclick="mostrarPolitica()">Saiba mais</a>. 
+    <button onclick="aceitarLGPD()">Aceitar</button>
+    <button onclick="recusarLGPD()">Recusar</button>
+    </p>
+  </div>
+
+  <header>
+    <div class="logo">
+      <h1>Raízes do Nordeste</h1>
+      <p>Sabor de casa em cada unidade</p>
+    </div>
+    <nav>
+      <button onclick="mostrarTela('inicio')">Início</button>
+      <button onclick="mostrarTela('cardapio')">Cardápio</button>
+      <button onclick="mostrarTela('carrinho')">Carrinho (<span id="qtd-carrinho">0</span>)</button>
+      <button onclick="mostrarTela('fidelidade')">Fidelidade</button>
+      <button onclick="mostrarTela('pedido')">Meu Pedido</button>
+      <button onclick="mostrarTela('login')" id="btn-login">Entrar</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Tela Início -->
+    <section id="tela-inicio" class="tela ativa">
+      <h2>Bem-vindo!</h2>
+      <p>Escolha a unidade mais próxima ou faça seu pedido online.</p>
+      
+      <div class="unidades">
+        <h3>Nossas unidades</h3>
+        <select id="select-unidade" onchange="trocarUnidade()">
+          <option value="recife">Recife - Centro</option>
+          <option value="olinda">Olinda - Bairro Novo</option>
+          <option value="jaboatao">Jaboatão - Prazeres</option>
+        </select>
+      </div>
+
+      <div class="destaques">
+        <h3>Promoções do dia</h3>
+        <div class="promo-card">
+          <p><strong>Combo Nordestino</strong> - R$ 24,90</p>
+          <p>Baião + suco + sobremesa</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tela Cardápio -->
+    <section id="tela-cardapio" class="tela">
+      <h2>Cardápio - <span id="nome-unidade">Recife - Centro</span></h2>
+      <div id="lista-cardapio" class="lista-produtos">
+        <!-- preenchido pelo JS -->
+      </div>
+    </section>
+
+    <!-- Tela Carrinho -->
+    <section id="tela-carrinho" class="tela">
+      <h2>Seu Carrinho</h2>
+      <div id="itens-carrinho"></div>
+      <p class="total">Total: R$ <span id="total-carrinho">0,00</span></p>
+      <button onclick="irParaPagamento()" class="btn-principal">Finalizar Pedido</button>
+    </section>
+
+    <!-- Tela Login / Cadastro -->
+    <section id="tela-login" class="tela">
+      <h2>Entrar ou Cadastrar</h2>
+      <form id="form-login" onsubmit="fazerLogin(event)">
+        <label>E-mail</label>
+        <input type="email" id="email" required placeholder="seu@email.com">
+        
+        <label>Senha</label>
+        <input type="password" id="senha" required>
+        
+        <div class="lgpd-check">
+          <input type="checkbox" id="aceite-lgpd" required>
+          <label for="aceite-lgpd">Li e aceito a Política de Privacidade (LGPD)</label>
+        </div>
+        
+        <button type="submit" class="btn-principal">Entrar</button>
+      </form>
+      <p><a href="#" onclick="mostrarCadastro()">Ainda não tem conta? Cadastre-se</a></p>
+    </section>
+
+    <!-- Tela Cadastro -->
+    <section id="tela-cadastro" class="tela">
+      <h2>Criar Conta</h2>
+      <form id="form-cadastro" onsubmit="fazerCadastro(event)">
+        <label>Nome completo</label>
+        <input type="text" id="nome" required>
+        
+        <label>E-mail</label>
+        <input type="email" id="email-cad" required>
+        
+        <label>Telefone</label>
+        <input type="tel" id="telefone" required placeholder="(81) 99999-9999">
+        
+        <label>Senha</label>
+        <input type="password" id="senha-cad" required>
+        
+        <div class="lgpd-check">
+          <input type="checkbox" id="aceite-lgpd-cad" required>
+          <label for="aceite-lgpd-cad">Autorizo o uso dos meus dados para o programa de fidelidade e comunicações (LGPD)</label>
+        </div>
+        
+        <button type="submit" class="btn-principal">Cadastrar</button>
+      </form>
+    </section>
+
+    <!-- Tela Fidelidade -->
+    <section id="tela-fidelidade" class="tela">
+      <h2>Programa de Fidelidade</h2>
+      <div class="pontos-box">
+        <p>Seus pontos: <strong id="pontos-usuario">0</strong></p>
+        <p>A cada R$ 10 em pedidos você ganha 1 ponto.</p>
+        <p>10 pontos = R$ 5 de desconto</p>
+      </div>
+      <h3>Como funciona</h3>
+      <ul>
+        <li>Faça pedidos pelo App, Totem ou site</li>
+        <li>Acumule pontos automaticamente</li>
+        <li>Troque por descontos nas próximas compras</li>
+      </ul>
+    </section>
+
+    <!-- Tela Acompanhamento de Pedido -->
+    <section id="tela-pedido" class="tela">
+      <h2>Acompanhar Pedido</h2>
+      <div id="status-pedido">
+        <p>Nenhum pedido em andamento.</p>
+      </div>
+    </section>
+
+    <!-- Tela Pagamento (simulado) -->
+    <section id="tela-pagamento" class="tela">
+      <h2>Pagamento</h2>
+      <p>Total a pagar: R$ <span id="total-pagamento">0,00</span></p>
+      
+      <div class="opcoes-pagamento">
+        <label><input type="radio" name="pagamento" value="pix" checked> PIX</label>
+        <label><input type="radio" name="pagamento" value="cartao"> Cartão de Crédito</label>
+        <label><input type="radio" name="pagamento" value="dinheiro"> Dinheiro (no local)</label>
+      </div>
+      
+      <p class="aviso">Você será redirecionado para o serviço de pagamento externo.</p>
+      <button onclick="simularPagamento()" class="btn-principal">Pagar agora</button>
+      <button onclick="mostrarTela('carrinho')" class="btn-secundario">Voltar</button>
+    </section>
+
+    <!-- Modal Política de Privacidade -->
+    <div id="modal-politica" class="modal">
+      <div class="modal-conteudo">
+        <h3>Política de Privacidade - LGPD</h3>
+        <p>Coletamos apenas os dados necessários para:</p>
+        <ul>
+          <li>Processar seus pedidos</li>
+          <li>Gerenciar o programa de fidelidade</li>
+          <li>Enviar promoções (somente se você autorizar)</li>
+        </ul>
+        <p>Seus dados não são vendidos. Você pode solicitar exclusão a qualquer momento.</p>
+        <button onclick="fecharPolitica()">Fechar</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Raízes do Nordeste © 2026 - Todos os direitos reservados</p>
+    <p><a href="#" onclick="mostrarPolitica()">Política de Privacidade</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
